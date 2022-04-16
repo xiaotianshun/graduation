@@ -13,7 +13,7 @@ class UserInfo(models.Model):
     # 用户昵称
     nikename = models.CharField(max_length=64, verbose_name="昵称")
     createtime = models.DateField(
-        default=datetime.date.today, verbose_name="创建时间")
+        auto_now_add=True, verbose_name="创建时间")
 
     is_suppper_user = models.BooleanField(default=False, verbose_name="超级用户")
     head_image = models.ImageField(
