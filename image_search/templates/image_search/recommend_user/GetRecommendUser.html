@@ -1,0 +1,26 @@
+{% extends "image_search/base.html" %}
+{% block title %}
+推荐好友
+{% endblock title %}
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+可能认识的人:
+<ol>
+    {% for user in userinfo %}
+    <li><img src={{ MEDIA_URL }}{{ user.head_image }} height="30" width="30"> {{user.user}} {{user.nikename}}
+        {{user.focus_number}}
+        {{user.createtime}} </li>
+    {%empty%}
+    无推荐用户
+    {% endfor %}
+</ol>
+
+
+{% endblock content %}
+
+{% block js %}
+
+{% endblock js %}

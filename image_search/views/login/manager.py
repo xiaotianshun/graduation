@@ -1,13 +1,17 @@
 # -*- coding: UTF-8 -*-
+from unittest import result
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth import login as djangoLogin
+from django.contrib.auth import logout as djangoLogout
 from image_search.models.userinfo.dao import UserInfo
 
 
 def login(request):
+    print(request)
+    print(request.user)
     if request.user.is_authenticated:
         return redirect("http://43.154.99.88:8000/")
     else:
@@ -33,6 +37,8 @@ def register(request):
 
 
 def register_check(request):
+    print(request)
+    print(request.user)
     data = request.GET
     username = data.get("username", "").strip()
     nikename = data.get("nikename", "").strip()
@@ -55,6 +61,31 @@ def register_check(request):
     user.save()
     UserInfo.objects.create(user=user, nikename=nikename)
     djangoLogin(request, user)
+    return JsonResponse({
+        'result': "succ",
+    })
+
+
+def GetLoginBar(request):
+    if request.user.is_authenticated:
+        nikename = UserInfo.objects.get(id=request.user.id).nikename
+        return JsonResponse({
+            'result': "登出",
+            'nikename': nikename,
+        })
+    else:
+        return JsonResponse({
+            'result': "登录",
+        })
+
+
+def Logout(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({
+            'result': "succ",
+        })
+    djangoLogout(request)
     return JsonResponse({
         'result': "succ",
     })

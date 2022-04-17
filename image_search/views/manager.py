@@ -5,4 +5,4 @@ from django.contrib.auth import login as djangoLogin
 
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, "image_search/index.html")
