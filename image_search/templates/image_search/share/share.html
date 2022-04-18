@@ -1,0 +1,57 @@
+{% extends "image_search/base.html" %}
+{% load static %}
+{% block title %}
+上传服务
+{% endblock title %}
+
+
+{% block css %}
+{% endblock css %}
+
+
+
+{% block content %}
+<div class="alert alert-warning" role="alert">
+    Tips:根据存储库中图片tag及用户画像 点赞收藏行为推荐相关内容图片
+</div>
+<div class="btn-group btn-group-justified" role="group" aria-label="Basic example">
+    </button>
+    <button type="button" class="btn-lg btn-light">
+        <a class="nav-link " href="/share/" style="color:black"><i class="fa fa-refresh"></i>换一批</span></a>
+    </button>
+</div>
+
+<br>
+<br>
+<button type="button" class="btn-lg btn-warning">
+    感兴趣图片 <span class="badge bg-secondary">{{imageinfo_len}}</span>
+</button>
+
+<div class="row row-cols-4 row-cols-md-5 g-4">
+    {% for image in imageinfo %}
+    <div class="col">
+        <div class="card h-100">
+            <a href={{ MEDIA_URL }}{{ image.image }} target="view_window">
+                <img src={{ MEDIA_URL }}{{ image.image }} class="card-img-top" alt={{ MEDIA_URL }}{{ image.image }}></a>
+            <div class="card-body">
+                <h5 class="card-title">{{image.imagename}}</h5>
+                <p class="card-text">{{image.describe}}</p>
+            </div>
+
+            <button class="btn btn-sm btn-info"><i class="fa fa-thumbs-up " style="color: white;"></i>点赞
+                {{image.like_number}}</button>
+            <button class="btn btn-sm btn-info"><i class="fa fa-star " style="color: white;"></i>收藏
+                {{image.store_number}}</button>
+            <div class="card-footer">
+                <small class="text-muted">{{image.username}}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+{% endblock js %}

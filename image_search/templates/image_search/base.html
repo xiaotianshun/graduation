@@ -8,7 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href={% static 'plugin/bootstrap/css/bootstrap.min.css' %}>
+    {% comment %}
     <link rel="stylesheet" href {% static 'plugin/font-awesome/css/font-awesome.min.css' %}>
+    <link rel="stylesheet" href {% static 'plugin/font-awesome.min.css' %}> {% endcomment %}
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.2.0/css/font-awesome.min.css">
     {% block css %} {% endblock css %}
 </head>
 
@@ -27,7 +30,7 @@
                         <a class="nav-link active" aria-current="page" href="/">主页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">上传服务</a>
+                        <a class="nav-link active" href="/upload">上传服务</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
@@ -43,7 +46,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">分享广场</a>
+                        <a class="nav-link active" href="/share">分享广场</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/recommend_user">可能认识的人</a>

@@ -9,7 +9,8 @@ import datetime
 
 
 class UserInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, db_index=True, verbose_name="帐号")
     # 用户昵称
     nikename = models.CharField(max_length=64, verbose_name="昵称")
     createtime = models.DateField(

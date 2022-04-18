@@ -1,16 +1,36 @@
 {% extends "image_search/base.html" %}
+{% load static %}
 {% block title %}
 首页
 {% endblock title %}
+
+
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock css %}
 
+
 {% block content %}
-
-
-
-
-
+<div class="onepage">
+    <div class="onepage-bg" id="onepagebg">
+        <div class="container">
+            <div class="row">
+                <div class="title-text">
+                    <div class="col-md-12 headfrontsize">
+                        <h1 class="headh1content">
+                            以图搜图
+                            <br>
+                        </h1>
+                        <p style="margin-top: 20px;line-height:30px;font-size:26px">分享交流社区</p>
+                        <p class="btn-app-store">
+                            <a class="btn btn-success btn-lg" href="#">立即体验</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block js %}

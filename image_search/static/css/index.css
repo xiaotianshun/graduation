@@ -1,0 +1,40 @@
+h1.h3,
+p,
+a.button {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.onepage {
+    height: 634px;
+}
+
+.onepage-bg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: center, center;
+    background-size: cover;
+}
+
+#onepagebg {
+    background-image: url("/static/img/background.jpg");
+}
+
+.headh1content {
+    margin-top: 150px;
+    line-height: 75px;
+}
+
+.title-text {
+    margin-left: 50px;
+
+}
+
+.headfrontsize h1 {
+    font-size: 50px;
+    color: #ffffff;
+}
+
+.headfrontsize p {
+    color: #ffffff;
+}
