@@ -17,7 +17,7 @@ def login(request):
     print(request)
     print(request.user)
     if request.user.is_authenticated:
-        return redirect("http://43.154.99.88:8000/")
+        return redirect("/")
     else:
         return render(request, 'image_search/login/login.html')
 

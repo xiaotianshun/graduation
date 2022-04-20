@@ -11,14 +11,82 @@
 
 {% block content %}
 
-<div class="row row-cols-4 row-cols-md-3 g-4 ">
+<div class="row row-cols-4 row-cols-md-4 g-4 ">
     <div class="col">
         <div class="card h-100" id="get_ori_img">
+
         </div>
     </div>
     <div class="col">
         <div class="card h-100" id="get_gray_img">
 
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100" id="get_fuzzy_img">
+
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100" id="get_dct_img">
+
+        </div>
+    </div>
+</div>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                均值哈希
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body" id="image-ahash">
+
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                差值哈希
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body" id="image-dhash">
+
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                感知哈希
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body" id="image-phash">
+
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                小波哈希
+            </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body" id="image-whash">
+            </div>
         </div>
     </div>
 </div>
@@ -29,6 +97,9 @@
     async function main() {
         await GetOriImg()
         await GetGrayImg()
+        await GetFuzzyImg()
+        await GetDCTImg()
+        await GetImageFP()
     }
 
     function GetOriImg() {
@@ -55,6 +126,7 @@
                 '<div class="card-footer"> <small class = "text-muted" > 原始图片</small>  </div>'
             );
             $obj.append($content_img);
+            $obj.append($('<div class="card-body"></div>'))
             $obj.append($content_txt);
             $obj.show(2000)
         })
@@ -68,28 +140,104 @@
             'url': '/upload/get_view',
             'type': 'get',
             'data': {
-                action: 'get_ori_img',
+                action: 'get_gray_img',
             },
             'dataType': 'json',
         }).done(function (resp) {
             $msg.hide(2000)
             // $obj.hide()
             let $content_img = $(
-                '<img src="/static/img/background.jpg" class="card-img-top" alt = "/static/img/background.jpg" >'
+                '<img src="/static/img/background.jpg" class="card-img-top" alt = "not found" >'
             );
             $content_img.attr('src', '/media/' + resp.path)
             console.log($content_img.attr('src'))
             console.log(resp.path)
             let $content_txt = $(
-                '<div class="card-footer"> <small class = "text-muted" > 原始图片</small>  </div>'
+                '<div class="card-footer"> <small class = "text-muted" > 灰度处理</small>  </div>'
             );
             $obj.append($content_img);
+            $obj.append($('<div class="card-body"></div>'))
             $obj.append($content_txt);
             $obj.show(2000)
         })
     }
 
+    function GetFuzzyImg() {
+        let $msg = $('<h2>resize-模糊处理中...</h2>');
+        let $obj = $('#get_fuzzy_img');
+        $obj.append($msg);
+        $.ajax({
+            'url': '/upload/get_view',
+            'type': 'get',
+            'data': {
+                action: 'get_fuzzy_img',
+            },
+            'dataType': 'json',
+        }).done(function (resp) {
+            $msg.hide(2000)
+            // $obj.hide()
+            let $content_img = $(
+                '<img src="/static/img/background.jpg" class="card-img-top" alt="not found">'
+            );
+            $content_img.attr('src', '/media/' + resp.path)
+            console.log($content_img.attr('src'))
+            console.log(resp.path)
+            let $content_txt = $(
+                '<div class="card-footer"> <small class="text-muted">resize-模糊处理</small> </div>'
+            );
+            $obj.append($content_img);
+            $obj.append($('<div class="card-body"></div>'))
+            $obj.append($content_txt);
+            $obj.show(2000)
+        })
+    }
 
+    function GetDCTImg() {
+        let $msg = $('<h2>DCT变换取低频部分...</h2>');
+        let $obj = $('#get_dct_img');
+        $obj.append($msg);
+        $.ajax({
+            'url': '/upload/get_view',
+            'type': 'get',
+            'data': {
+                action: 'get_dct_img',
+            },
+            'dataType': 'json',
+        }).done(function (resp) {
+            $msg.hide(2000)
+            // $obj.hide()
+            let $content_img = $(
+                '<img src="/static/img/background.jpg" class="card-img-top" alt="not found">'
+            );
+            $content_img.attr('src', '/media/' + resp.path)
+            console.log($content_img.attr('src'))
+            console.log(resp.path)
+            let $content_txt = $(
+                '<div class="card-footer"> <small class="text-muted">DCT变换取低频部分</small> </div>'
+            );
+            $obj.append($content_img);
+            $obj.append($('<div class="card-body"></div>'))
+            $obj.append($content_txt);
+            $obj.show(2000)
+        })
+    }
+
+    function GetImageFP() {
+        $.ajax({
+            'url': '/upload/get_view',
+            'type': 'get',
+            'data': {
+                action: 'get_image_fp',
+            },
+            'dataType': 'json',
+        }).done(function (resp) {
+            $('#image-ahash').text(resp.ahash);
+            $('#image-dhash').text(resp.dhash);
+            $('#image-phash').text(resp.phash);
+            $('#image-whash').text(resp.whash);
+
+        })
+    }
     main()
 </script>
 {% endblock js %}
