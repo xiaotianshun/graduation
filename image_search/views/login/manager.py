@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from email.mime import image
 from unittest import result
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
@@ -7,6 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as djangoLogin
 from django.contrib.auth import logout as djangoLogout
 from image_search.models.userinfo.dao import UserInfo
+from image_search.models.imageinfo.dao import ImageInfo
+from image_search.views.login.verification import Verify_code
+from io import BytesIO
 
 
 def login(request):
@@ -18,13 +22,28 @@ def login(request):
         return render(request, 'image_search/login/login.html')
 
 
+def GenVerifyCode(request):
+    image, code = Verify_code()
+    buf = BytesIO()
+    image.save(buf, 'png')
+    request.session['verifycode'] = code
+    print(code, request.session['verifycode'])
+    return HttpResponse(buf.getvalue())
+
+
 def login_check(request):
     username = request.GET.get('username').strip()
     password = request.GET.get('password').strip()
+    verification = request.GET.get('verification').strip()
     user = authenticate(username=username, password=password)  # 从数据库中查找这个用户
     if not user:  # 如果没有就直接返回不成功
         return JsonResponse({
             'result': "用户名或密码不正确"
+        })
+    print(request.session.get('verifycode'), verification)
+    if request.session.get('verifycode').lower() != verification.lower():
+        return JsonResponse({
+            'result': "验证码错误"
         })
     djangoLogin(request, user)  # 找到了就登录
     return JsonResponse({

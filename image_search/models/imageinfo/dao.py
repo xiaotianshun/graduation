@@ -1,7 +1,9 @@
 # -*- coding: UTF-8 -*-
 
+from math import frexp
 from django.db import models
 from django.contrib.auth.models import User
+from image_search.models.userinfo.dao import UserInfo
 
 
 class ImageInfo(models.Model):
@@ -19,6 +21,11 @@ class ImageInfo(models.Model):
         verbose_name="点赞数", default=0, db_index=True)
     store_number = models.IntegerField(
         verbose_name="收藏数", default=0, db_index=True)
+
+    def nikename(self):
+        return UserInfo.objects.get(id=self.username.id).nikename
+    nikename.admin_order_field = 'username'  # 定义排序（默认自定的title是无法点它标题进行排序的）
+    nikename.short_description = '昵称'  # 定义显示名
 
     class Meta:
         # # 联合约束   其中goods和user不能重复

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["43.154.99.88", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

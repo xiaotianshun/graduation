@@ -31,21 +31,27 @@
                                 <input class="input100" type="text" name="username" id="username" placeholder="请输入帐号">
                                 <span class="focus-input100"></span>
                             </div>
-                            <div class="wrap-input100 validate-input" data-validate="Please enter password">
+                            <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
                                 <input class="input100" type="password" name="pass" id="password" placeholder="请输入密码">
                                 <span class="focus-input100"></span>
                             </div>
-                            <div id="login-errmsg" style="height: 20px;margin:10px 20px;color: red;"></div>
+                            <div class="wrap-input100 validate-input" data-validate="Please enter password">
+                                <input class="input100" type="password" name="pass" id="verification"
+                                    placeholder="请输入验证码" style="width=50%;">
+                                <span class="focus-input100"></span>
+                            </div>
+                            <img src="/login/genverifycode/" style="margin:0px 10px;" id="image-code" title="点击更换图片">
+                            <div id="login-errmsg" style="height: 20px;margin:0px 0px;color: red;"></div>
                             <div class="container-login100-form-bt" style="padding-top: 5px;">
                                 <button class="login100-form-btn" id="Login">
                                     登录
                                 </button>
                             </div>
-                            <div class="flex-col-c p-b-40" style="padding-top: 1.5em;">
-                                <span class="txt1 p-b-9">
+                            <div class="p-b-40" style="padding-top: 0.3em;">
+                                <span class="txt1 p-b-9" style="display:inline;">
                                     首次使用?
                                 </span>
-                                <a href="/login/register" class="txt3">
+                                <a href="/login/register/" class="txt3" style="display:inline;">
                                     立即注册
                                 </a>
                             </div>
@@ -69,17 +75,24 @@
 
 <script>
     $(function () {
+        $('#image-code').click(function () {
+            let oldsrc = $(this).attr('src');
+            console.log(oldsrc)
+            $(this).attr('src', oldsrc + '?')
+        })
         $('#Login').click(function () {
             $('#login-errmsg').css('visibility', 'hidden');
             username = $('#username').val()
             password = $('#password').val()
+            verification = $('#verification').val()
             console.log(username)
             $.ajax({
                 'url': '/login/check', //验证地址
                 'type': 'get', //请求类型
                 'data': {
                     'username': username,
-                    'password': password
+                    'password': password,
+                    'verification': verification,
                 }, //发送数据
                 'dataType': 'json', //希望返回数据类型
             }).done(function (resp) {

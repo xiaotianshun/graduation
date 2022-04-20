@@ -1,0 +1,95 @@
+{% extends "image_search/base.html" %}
+{% load static %}
+
+
+{% block title %}
+可视化view
+{% endblock title %}
+
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+<div class="row row-cols-4 row-cols-md-3 g-4 ">
+    <div class="col">
+        <div class="card h-100" id="get_ori_img">
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100" id="get_gray_img">
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block js %}
+<script>
+    async function main() {
+        await GetOriImg()
+        await GetGrayImg()
+    }
+
+    function GetOriImg() {
+        let $msg = $('<h2>加载最新上传图片...</h2>');
+        let $obj = $('#get_ori_img');
+        $obj.append($msg);
+        $.ajax({
+            'url': '/upload/get_view',
+            'type': 'get',
+            'data': {
+                action: 'get_ori_img',
+            },
+            'dataType': 'json',
+        }).done(function (resp) {
+            $msg.hide(2000)
+            // $obj.hide()
+            let $content_img = $(
+                '<img src="/static/img/background.jpg" class="card-img-top" alt = "/static/img/background.jpg" >'
+            );
+            $content_img.attr('src', '/media/' + resp.path)
+            console.log($content_img.attr('src'))
+            console.log(resp.path)
+            let $content_txt = $(
+                '<div class="card-footer"> <small class = "text-muted" > 原始图片</small>  </div>'
+            );
+            $obj.append($content_img);
+            $obj.append($content_txt);
+            $obj.show(2000)
+        })
+    }
+
+    function GetGrayImg() {
+        let $msg = $('<h2>生成灰度图片中...</h2>');
+        let $obj = $('#get_gray_img');
+        $obj.append($msg);
+        $.ajax({
+            'url': '/upload/get_view',
+            'type': 'get',
+            'data': {
+                action: 'get_ori_img',
+            },
+            'dataType': 'json',
+        }).done(function (resp) {
+            $msg.hide(2000)
+            // $obj.hide()
+            let $content_img = $(
+                '<img src="/static/img/background.jpg" class="card-img-top" alt = "/static/img/background.jpg" >'
+            );
+            $content_img.attr('src', '/media/' + resp.path)
+            console.log($content_img.attr('src'))
+            console.log(resp.path)
+            let $content_txt = $(
+                '<div class="card-footer"> <small class = "text-muted" > 原始图片</small>  </div>'
+            );
+            $obj.append($content_img);
+            $obj.append($content_txt);
+            $obj.show(2000)
+        })
+    }
+
+
+    main()
+</script>
+{% endblock js %}

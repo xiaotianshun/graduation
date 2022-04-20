@@ -14,22 +14,86 @@
 <div class="alert alert-warning" role="alert">
     Tips:提供图片上传 embdding 生成兴趣标签 建立非结构化数据库
 </div>
+<!-- Modal -->
+<div class="modal fade" id="op1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">提示窗口</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                已经录入后台指纹库
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="op2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">提示窗口</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                已经生成兴趣标签
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="op3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">提示窗口</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                已经加入索引库
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="btn-group btn-group-justified" role="group" aria-label="Basic example">
-    <button type="button" class="btn-lg btn-light">
-        <i class="fa fa-upload "></i>
-        上传图片
-    </button>
-    <button type="button" class="btn-lg btn-light">
+    <form method='post' enctype="multipart/form-data" action="/upload/handle/">
+        {% csrf_token %}
+        <input type="file" class="btn-light" style="width: 8em;" name="pic">
+        </input>
+        <br>
+        <button type="submit" class="btn-lg btn-light" value="上传">
+            <i class="fa fa-upload "></i>
+            上传图片
+        </button>
+    </form>
+    <button type="button" class="btn-lg btn-light" data-bs-toggle="modal" data-bs-target="#op1">
         生成图片指纹
     </button>
-    <button type="button" class="btn-lg btn-light">
+    <button type="button" class="btn-lg btn-light" data-bs-toggle="modal" data-bs-target="#op2">
         生成兴趣标签
     </button>
-    <button type="button" class="btn-lg btn-light">
+    <button type="button" class="btn-lg btn-light" data-bs-toggle="modal" data-bs-target="#op3">
         加入索引库
     </button>
-    <button type="button" class="btn-lg btn-light">
-        一键同步
+    <button type="button" class="btn-lg btn-light ">
+        <a href="/upload/upload_view" style="color: black;text-decoration:none;">
+            一键同步
+        </a>
+        </button>
 </div>
 
 <br>
@@ -84,5 +148,10 @@
 {% endblock content %}
 
 {% block js %}
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+</script>
 
 {% endblock js %}

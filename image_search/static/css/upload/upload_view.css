@@ -1,0 +1,26 @@
+/*BBS*/
+#bbs{
+    padding: 80px 0;
+    text-align: center;
+}
+ 
+#bbs img{
+    margin:0 auto;
+}
+ 
+#bbs h3{
+    font-weight:bold;
+}
+ 
+#bbs a{
+    color: #212121;
+    text-decoration: none;
+}
+#bbs .col-md-4{
+    padding: 15px;
+}
+#bbs .col-md-4:hover{
+    padding: 15px;
+    background:#f1f1f1;
+    box-shadow:1px 1px 4px #ccc;
+}
