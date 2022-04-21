@@ -1,3 +1,4 @@
+from ctypes import resize
 from email.mime import image
 import os
 import time
@@ -28,7 +29,6 @@ def diff(ori_hash, oth_hash):
 
 def Recall(request):
     dataset = list(ImageFP.objects.all())
-    print(dataset)
     pic = request.FILES['pic']
     ori_name = pic.name
     save_path = "%s/search_src/%s" % (MEDIA_ROOT, ori_name)
@@ -37,11 +37,13 @@ def Recall(request):
         for content in pic.chunks():
             f.write(content)
 
-    phash = imagehash.phash(Image.open(pic))
-    result = [(item, (1 - diff(phash, item.phash)/64)*100.)
-              for item in dataset if diff(phash, item.phash) < 10]
+    phash = imagehash.phash(Image.open(pic), 12)
+    result = [(item, (1 - diff(phash, item.phash)/64)*100., diff(phash, item.phash))
+              for item in dataset if diff(phash, item.phash) < 30]
+
     result.sort(key=lambda x: x[1], reverse=True)
     print("/media/search_src/%s" % (ori_name))
+    print('result:', result)
     return {
         'src_image': "/media/search_src/%s" % (ori_name),
         'ori_name': ori_name,

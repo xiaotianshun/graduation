@@ -55,8 +55,11 @@
             <img src="{{ MEDIA_URL }}{{ image.0.image }} " class="card-img-top"
                 alt="{{ MEDIA_URL }}{{ image.0.image }} ">
             <div class="card-body">
+                <h5 class="card-title">{{image.0.imagename}}</h5>
                 <p class="card-text">
                     <strong>相似度</strong>:{{image.1}}% </p>
+                <p class="card-text">
+                    <strong>近邻距离</strong>:{{image.2}} </p>
             </div>
             <div class="card-footer">
                 <small class="text-muted">{{image.0.createtime}}</small>

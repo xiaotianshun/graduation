@@ -18,7 +18,7 @@ class UserInfo(models.Model):
 
     is_suppper_user = models.BooleanField(default=False, verbose_name="超级用户")
     head_image = models.ImageField(
-        verbose_name='头像', upload_to='head_img', default="/head_img/default.jpg")
+        verbose_name='头像', upload_to='head_img', default="/head_img/default.jpeg")
     fan_number = models.IntegerField(verbose_name="粉丝数", default=0)
     focus_number = models.IntegerField(verbose_name="关注数", default=0)
 

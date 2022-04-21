@@ -60,10 +60,10 @@ def UploadHandle(request):
 
 def ImageFPCreat(request, imageinfo, save_path):
 
-    ahash = imagehash.average_hash(Image.open(save_path))
-    dhash = imagehash.dhash(Image.open(save_path))
-    phash = imagehash.phash(Image.open(save_path))
-    whash = imagehash.whash(Image.open(save_path))
+    ahash = imagehash.average_hash(Image.open(save_path), 12)
+    dhash = imagehash.dhash(Image.open(save_path), 12)
+    phash = imagehash.phash(Image.open(save_path), 12)
+    whash = imagehash.whash(Image.open(save_path), 8)
     print(ahash, dhash, phash, whash)
     ImageFP.objects.create(imageinfo=imageinfo, ahash=ahash,
                            dhash=dhash, phash=phash, whash=whash)
@@ -80,7 +80,6 @@ def GetView(request):
     dirname = str(obj.image).split('/')[-1].split('.')[0]
     path = MEDIA_ROOT + '/temp/' + dirname
     ori_path = MEDIA_ROOT + '/' + str(obj.image)
-    print(dirname, path)
     folder = os.path.exists(MEDIA_ROOT + '/temp/' + dirname)
     if not folder:  # 判断是否存在文件夹如果不存在则创建为文件夹
         os.makedirs(path)
@@ -109,22 +108,18 @@ def GetGrayImg(request, oripath, distpath):
     return JsonResponse({'path': distpath})
 
 
-def GetGrayImg(request, oripath, distpath):
-    Image.open(oripath).convert("L").save(MEDIA_ROOT + distpath, "JPEG")
-    return JsonResponse({'path': distpath})
-
-
 def GetFuzzyImg(request, oripath, distpath):
+    hash_size, highfreq_factor = 12, 4
+    img_size = hash_size * highfreq_factor
     Image.open(oripath).convert("L").resize(
-        (32, 32), Image.ANTIALIAS).save(MEDIA_ROOT + distpath, "JPEG")
+        (img_size, img_size), Image.ANTIALIAS).save(MEDIA_ROOT + distpath, "JPEG")
     return JsonResponse({'path': distpath})
 
 
 def GetDctImg(request, oripath, distpath):
     import numpy
     import scipy.fftpack
-    print(request)
-    hash_size, highfreq_factor = 8, 4
+    hash_size, highfreq_factor = 12, 4
     img_size = hash_size * highfreq_factor
     image = Image.open(oripath).convert("L").resize(
         (img_size, img_size), Image.ANTIALIAS)

@@ -56,8 +56,6 @@ def register(request):
 
 
 def register_check(request):
-    print(request)
-    print(request.user)
     data = request.GET
     username = data.get("username", "").strip()
     nikename = data.get("nikename", "").strip()
