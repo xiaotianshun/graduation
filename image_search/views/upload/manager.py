@@ -39,11 +39,11 @@ def UploadHandle(request):
         return HttpResponse('请先选择需上传图片')
     pic = request.FILES['pic']
     imagename = pic.name
-    filename = str(request.user.id) + "_" + \
-        str(int(time.time())) + os.path.splitext(imagename)[-1]
+    filename = str(int(time.time())) + \
+        os.path.splitext(imagename)[-1] + "_" + str(request.user.id)
 
     save_path = "%s/image/%s" % (MEDIA_ROOT, filename)
-    print(save_path)
+
     with open(save_path, 'wb') as f:
         for content in pic.chunks():
             f.write(content)

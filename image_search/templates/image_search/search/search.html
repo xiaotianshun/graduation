@@ -1,0 +1,72 @@
+{% extends "image_search/base.html" %}
+{% load static %}
+{% block title %}
+上传服务
+{% endblock title %}
+
+
+{% block css %}
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+{% endblock css %}
+
+
+{% block content %}
+<div class="alert alert-warning" role="alert">
+    Tips: 使用Faiss + LSH 近邻检索
+</div>
+<div class="row row-cols-4 row-cols-md-3 g-4 ">
+    <div class="btn-group btn-group-justified" role="group" aria-label="Basic example">
+        <form method='post' enctype="multipart/form-data" action="/search/">
+            {% csrf_token %}
+            <input type="file" class="btn-light" style="width: 8em;" name="pic">
+            </input>
+            <br>
+            <button type="submit" class="btn-lg btn-light" value="上传">
+                <i class="fa fa-upload "></i>
+                精准召回
+            </button>
+        </form>
+    </div>
+    <div class="col">
+        <div class="card h-100" id="get_ori_img">
+            <img src="{{ src_image }}" class="card-img-top" alt="{{ src_image }}">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>名称:</strong>
+                    {{ori_name}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">原始图片</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<button type="button" class="btn-lg btn-primary">
+    召回图片 <span class="badge bg-secondary">total:{{result|length}}</span>
+</button>
+<div class="row row-cols-4 row-cols-md-4 g-4 ">
+    {% for image in result %}
+    <div class="col">
+        <div class="card h-100" id="get_ori_img">
+            <img src="{{ MEDIA_URL }}{{ image.0.image }} " class="card-img-top"
+                alt="{{ MEDIA_URL }}{{ image.0.image }} ">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>相似度</strong>:{{image.1}}% </p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">{{image.0.createtime}}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block js %}
+
+{% endblock js %}

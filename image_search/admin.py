@@ -11,7 +11,7 @@ class control_view_UserInfo(admin.ModelAdmin):
 
 
 class control_view_ImageInfo(admin.ModelAdmin):
-    list_per_page = 10
+    list_per_page = 50
     actions_on_bottom = True  # 【6】底部显示删除动作选项
     actions_on_top = False  # 【7】删除头部动作选项
     list_filter = ['username']  # 【8】列表页右侧过滤栏
@@ -22,7 +22,7 @@ class control_view_ImageInfo(admin.ModelAdmin):
 
 
 class control_view_ImageFP(admin.ModelAdmin):
-    list_per_page = 10
+    list_per_page = 50
     actions_on_bottom = True  # 【6】底部显示删除动作选项
     actions_on_top = False  # 【7】删除头部动作选项
     '''自定义：显示样式'''
