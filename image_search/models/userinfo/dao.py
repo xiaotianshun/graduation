@@ -21,6 +21,8 @@ class UserInfo(models.Model):
         verbose_name='头像', upload_to='head_img', default="/head_img/default.jpeg")
     fan_number = models.IntegerField(verbose_name="粉丝数", default=0)
     focus_number = models.IntegerField(verbose_name="关注数", default=0)
+    hobby_tag = models.CharField(
+        max_length=512, verbose_name="兴趣标签", default="")
 
     def __str__(self):
         return str(self.user)

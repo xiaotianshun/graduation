@@ -7,7 +7,9 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from graduation.settings import MEDIA_ROOT
 from image_search.models.userinfo.dao import UserInfo
+from image_search.views.tools.yolov5 import GetImageTag
 from image_search.models.imageinfo.dao import ImageInfo
+from image_search.models.imagetag.dao import ImageTag
 from image_search.models.imageinfo.fingerprintdao import ImageFP
 from django.views.decorators.csrf import csrf_exempt, csrf_protect  # Add this
 import imagehash
@@ -22,6 +24,14 @@ def Search(request):
         return render(request, 'image_search/search/search.html', recallinfo)
     return render(request, 'image_search/search/search.html')
 
+
+def FuzzySearch(request):
+    if request.method == 'GET':
+        return render(request, 'image_search/fuzzy_search/fuzzy_search.html')
+    elif request.method == 'POST' and request.FILES.get('pic', None) != None:
+        recallinfo = TagRecall(request)
+        return render(request, 'image_search/fuzzy_search/fuzzy_search.html', recallinfo)
+    return render(request, 'image_search/fuzzy_search/fuzzy_search.html')
 
 def diff(ori_hash, oth_hash):
     return ori_hash - imagehash.hex_to_hash(oth_hash)
@@ -47,5 +57,35 @@ def Recall(request):
     return {
         'src_image': "/media/search_src/%s" % (ori_name),
         'ori_name': ori_name,
+        'result': result,
+    }
+
+
+def TagRecall(request):
+    dataset = list(ImageFP.objects.all())
+    pic = request.FILES['pic']
+    ori_name = pic.name
+    save_path = "%s/search_src/%s" % (MEDIA_ROOT, ori_name)
+    dist_save_dir = "%s/search_src/tag" % (MEDIA_ROOT)
+
+    with open(save_path, 'wb') as f:
+        for content in pic.chunks():
+            f.write(content)
+
+    tag = GetImageTag(save_path, dist_save_dir)
+    imagetag = ImageTag.objects.filter(tag__in=list(tag))
+    print(list(tag))
+    result = [item.imageinfo for item in imagetag]
+    print(result)
+    # phash = imagehash.phash(Image.open(pic), 12)
+    # result = [(item, (1 - diff(phash, item.phash)/64)*100., diff(phash, item.phash))
+    #           for item in dataset if diff(phash, item.phash) < 30]
+
+    # result.sort(key=lambda x: x[1], reverse=True)
+    # print("/media/search_src/%s" % (ori_name))
+    # print('result:', result)
+    return {
+        'src_image': "/media/search_src/tag/%s" % (ori_name.split('.')[0] + '.jpg'),
+        'ori_name': ' '.join(list(tag)),
         'result': result,
     }

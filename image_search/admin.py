@@ -2,12 +2,13 @@ from curses.ascii import US
 from django.contrib import admin
 from image_search.models.userinfo.dao import UserInfo
 from image_search.models.imageinfo.dao import ImageInfo
+from image_search.models.imagetag.dao import ImageTag
 from image_search.models.imageinfo.fingerprintdao import ImageFP
 
 
 class control_view_UserInfo(admin.ModelAdmin):
     '''自定义：显示样式'''
-    list_display = ['id', 'user', 'nikename', 'createtime', 'head_image']
+    list_display = ['id', 'user', 'nikename', 'createtime', 'head_image','hobby_tag']
 
 
 class control_view_ImageInfo(admin.ModelAdmin):
@@ -18,7 +19,7 @@ class control_view_ImageInfo(admin.ModelAdmin):
     search_fields = ['imagename']  # 【9】列表页上方的搜索框
     '''自定义：显示样式'''
     list_display = ['id', 'username', 'nikename', 'imagename',
-                    'createtime', 'image', 'like_number', 'store_number']
+                    'createtime', 'image', 'like_number', 'store_number', 'all_tag']
 
 
 class control_view_ImageFP(admin.ModelAdmin):
@@ -30,10 +31,19 @@ class control_view_ImageFP(admin.ModelAdmin):
                     'ahash', 'dhash', 'phash', 'whash']
 
 
+class control_view_ImageTag(admin.ModelAdmin):
+    list_per_page = 50
+    actions_on_bottom = True  # 【6】底部显示删除动作选项
+    actions_on_top = False  # 【7】删除头部动作选项
+    '''自定义：显示样式'''
+    list_display = ['id', 'image',
+                    'tag', 'score']
+
 # Register your models here.
 admin.site.register(UserInfo, control_view_UserInfo)
 admin.site.register(ImageInfo, control_view_ImageInfo)
 admin.site.register(ImageFP, control_view_ImageFP)
+admin.site.register(ImageTag, control_view_ImageTag)
 # admin.site.register(UserInfo)
 admin.site.site_title = "以图搜图后台管理"
 admin.site.site_header = "以图搜图后台"

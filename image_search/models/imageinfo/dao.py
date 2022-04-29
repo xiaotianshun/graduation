@@ -22,6 +22,9 @@ class ImageInfo(models.Model):
     store_number = models.IntegerField(
         verbose_name="收藏数", default=0, db_index=True)
 
+    all_tag = models.CharField(
+        max_length=128, verbose_name='图片标签', default='')
+
     def nikename(self):
         return UserInfo.objects.get(id=self.username.id).nikename
     nikename.admin_order_field = 'username'  # 定义排序（默认自定的title是无法点它标题进行排序的）

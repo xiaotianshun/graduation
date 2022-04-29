@@ -85,7 +85,7 @@ def register_check(request):
 
 def GetLoginBar(request):
     if request.user.is_authenticated:
-        nikename = UserInfo.objects.get(id=request.user.id).nikename
+        nikename = UserInfo.objects.get(user=request.user).nikename
         return JsonResponse({
             'result': "登出",
             'nikename': nikename,
