@@ -6,6 +6,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from image_search.models.imageinfo.dao import ImageInfo
 
+THRESHOLD = 0.70
+SHARE_THRESHOLD = 0.90
+
 
 class ImageTag(models.Model):
     imageinfo = models.ForeignKey(
@@ -13,7 +16,7 @@ class ImageTag(models.Model):
     tag = models.CharField(
         max_length=64, verbose_name="标签", default="", db_index=True)
     score = models.DecimalField(
-        max_digits=11, decimal_places=10, verbose_name='分数')
+        max_digits=11, decimal_places=10, verbose_name='分数', db_index=True)
 
     def image(self):
         return ImageInfo.objects.get(id=self.imageinfo.id).image

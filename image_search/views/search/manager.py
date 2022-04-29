@@ -1,6 +1,8 @@
+from cgi import print_arguments
 from ctypes import resize
 from email.mime import image
 import os
+import random
 import time
 from unittest import result
 from django.http import HttpResponse, JsonResponse
@@ -9,7 +11,7 @@ from graduation.settings import MEDIA_ROOT
 from image_search.models.userinfo.dao import UserInfo
 from image_search.views.tools.yolov5 import GetImageTag
 from image_search.models.imageinfo.dao import ImageInfo
-from image_search.models.imagetag.dao import ImageTag
+from image_search.models.imagetag.dao import ImageTag, THRESHOLD
 from image_search.models.imageinfo.fingerprintdao import ImageFP
 from django.views.decorators.csrf import csrf_exempt, csrf_protect  # Add this
 import imagehash
@@ -32,6 +34,7 @@ def FuzzySearch(request):
         recallinfo = TagRecall(request)
         return render(request, 'image_search/fuzzy_search/fuzzy_search.html', recallinfo)
     return render(request, 'image_search/fuzzy_search/fuzzy_search.html')
+
 
 def diff(ori_hash, oth_hash):
     return ori_hash - imagehash.hex_to_hash(oth_hash)
@@ -73,9 +76,12 @@ def TagRecall(request):
             f.write(content)
 
     tag = GetImageTag(save_path, dist_save_dir)
-    imagetag = ImageTag.objects.filter(tag__in=list(tag))
-    print(list(tag))
+    tags = [key for key, val in tag.items() if val > THRESHOLD]
+    imagetag = ImageTag.objects.filter(tag__in=tags, score__gt=THRESHOLD)
+    print(tags)
     result = [item.imageinfo for item in imagetag]
+    print('recall size =', len(result))
+    result = random.sample(result, min(len(result), 20))
     print(result)
     # phash = imagehash.phash(Image.open(pic), 12)
     # result = [(item, (1 - diff(phash, item.phash)/64)*100., diff(phash, item.phash))
@@ -84,8 +90,9 @@ def TagRecall(request):
     # result.sort(key=lambda x: x[1], reverse=True)
     # print("/media/search_src/%s" % (ori_name))
     # print('result:', result)
+
     return {
         'src_image': "/media/search_src/tag/%s" % (ori_name.split('.')[0] + '.jpg'),
-        'ori_name': ' '.join(list(tag)),
+        'ori_name': '未识别' if not tags else ' '.join(tags),
         'result': result,
     }

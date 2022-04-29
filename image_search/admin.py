@@ -8,7 +8,8 @@ from image_search.models.imageinfo.fingerprintdao import ImageFP
 
 class control_view_UserInfo(admin.ModelAdmin):
     '''自定义：显示样式'''
-    list_display = ['id', 'user', 'nikename', 'createtime', 'head_image','hobby_tag']
+    list_display = ['id', 'user', 'nikename',
+                    'createtime', 'head_image', 'hobby_tag']
 
 
 class control_view_ImageInfo(admin.ModelAdmin):
@@ -32,12 +33,13 @@ class control_view_ImageFP(admin.ModelAdmin):
 
 
 class control_view_ImageTag(admin.ModelAdmin):
-    list_per_page = 50
+    list_per_page = 1000
     actions_on_bottom = True  # 【6】底部显示删除动作选项
     actions_on_top = False  # 【7】删除头部动作选项
     '''自定义：显示样式'''
     list_display = ['id', 'image',
                     'tag', 'score']
+
 
 # Register your models here.
 admin.site.register(UserInfo, control_view_UserInfo)
