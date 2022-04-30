@@ -13,6 +13,7 @@ from image_search.models.imagetag.dao import ImageTag
 from image_search.models.imageinfo.fingerprintdao import ImageFP
 from image_search.views.tools.yolov5 import GetImageTag
 from image_search.views.tools.comm import coast_time
+from image_search.views.tools.faiss import faiss_add
 from django.views.decorators.csrf import csrf_exempt, csrf_protect  # Add this
 import imagehash
 from PIL import Image
@@ -75,8 +76,9 @@ def ImageFPCreat(request, imageinfo, save_path):
     phash = imagehash.phash(Image.open(save_path), 12)
     whash = imagehash.whash(Image.open(save_path), 8)
     print(ahash, dhash, phash, whash)
-    ImageFP.objects.create(imageinfo=imageinfo, ahash=ahash,
+    imagefp = ImageFP.objects.create(imageinfo=imageinfo, ahash=ahash,
                            dhash=dhash, phash=phash, whash=whash)
+    faiss_add(imagefp.id, str(phash))
     return 0
 
 
