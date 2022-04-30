@@ -10,6 +10,8 @@ import random
 
 
 def Share(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("登录后可根据用户画像匹配相似图片")
     userinfo = UserInfo.objects.get(user=request.user)
     hobby_list = list(filter(None, userinfo.hobby_tag.split(' ')))
     print(hobby_list)

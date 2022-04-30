@@ -80,8 +80,14 @@ WSGI_APPLICATION = 'graduation.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # 默认
+        'NAME': 'image_search',  # 连接的数据库
+        'HOST': '10.206.32.13',  # mysql的ip地址
+        'PORT': 3306,  # mysql的端口
+        'USER': 'root',  # mysql的用户名
+        'PASSWORD': 'Xts83199635$$'  # mysql的密码
     }
 }
 
