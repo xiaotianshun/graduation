@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from image_search.models.imageinfo.dao import ImageInfo
 
 
-def AddImage():
+def Init():
     user = User.objects.get(id=7)
     print(user)
     path = "/home/yoloxiao/project/graduation/data"
     datanames = os.listdir(path)
     idx = 0
+    os.system(
+        "cp /home/yoloxiao/project/graduation/etc/init.index /home/yoloxiao/project/graduation/image_search/data/index_flat.index")
     for name in datanames:
         print('id=', idx, name)
         src_path = "/home/yoloxiao/project/graduation/data/" + name
@@ -28,4 +30,4 @@ def AddImage():
         idx += 1
 
 
-AddImage()
+Init()
